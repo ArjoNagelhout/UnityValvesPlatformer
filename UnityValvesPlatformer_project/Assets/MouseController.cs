@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
+    public float maxDistance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +16,7 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E))
         {
             RaycastHit hit;
             Ray ray = new Ray(transform.position, transform.forward);
@@ -26,12 +28,19 @@ public class MouseController : MonoBehaviour
             {
                 
                 objectHit = hit.transform;
+
+                
                 
                 valveController = objectHit.GetComponent<ValveController>();
 
                 if (valveController != null)
                 {
-                    valveController.active = !valveController.active;
+
+                    float distance = Vector3.Distance(objectHit.position, transform.position);
+                    if (distance < maxDistance)
+                    {
+                        valveController.active = !valveController.active;
+                    }
                 }
             }
         }
